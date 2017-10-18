@@ -182,6 +182,8 @@ ul.todo li .buttons button.complete svg {
     border-radius: 11px;
     border: 1.5px solid #25b99a;
 
+    -webkit-transition: background 0.2s ease;
+    -moz-transition: background 0.2s ease;
     transition: background 0.2s ease;
 }
 
@@ -204,8 +206,8 @@ ul.todo#completed li .buttons button.complete svg .fill {
 }
 
 ul.todo li.buttons button svg .fill {
-    -webkit-animation:fill 0.2s ease;
-    -moz-animation:fill 0.2s ease;
+    -webkit-transition:fill 0.2s ease;
+    -moz-transition:fill 0.2s ease;
     transition:fill 0.2s ease;
 }
  
@@ -219,4 +221,20 @@ ul.todo li .buttons button.remove:hover svg .fill  {
 
 ul.todo li .buttons button.complete svg .fill {
     fill: #25b99a;
+}
+
+ul.todo#completed:not(:empty):before {
+    content: '';
+    width: 150px;
+    height: 1px;
+    background: #d8e5e0;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    margin: 0 0 0 -75px;
+}
+
+ul.todo#completed:not(:empty) {
+    padding: 60px 0 0 0;
+    position: relative;
 }
