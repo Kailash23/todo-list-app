@@ -1,6 +1,6 @@
 var data = (localStorage.getItem('todoList')) ? JSON.parse(localStorage.getItem('todoList')) : {
-    todo: [],
-    completed: []
+	todo: [],
+	completed: []
 };
 
 //remove and complete icons in svg format
@@ -12,117 +12,119 @@ renderTodoList();
 //User clicked on the add button
 // If there is any text inside the item field, add that text to todo list
 document.getElementById('add').addEventListener('click', function() {
-    var value = document.getElementById('item').value;
-    if (value) {
-        addItem(value);
-    }
+	var value = document.getElementById('item').value;
+	if (value) {
+		addItem(value);
+	}
 });
+
 //key enter save note
 document.getElementById('item').addEventListener('keydown', function(e) {
-    var value = this.value;
-    if (e.code === 'Enter' && value) {
-        addItem(value);
-    }
+	var value = this.value;
+	if (e.code === 'Enter' && value) {
+		addItem(value);
+	}
 });
 
 function addItem(value) {
-    addItemToDOM(value);
-    document.getElementById('item').value = '';
-    //Adding to object
-    data.todo.push(value);
+	addItemToDOM(value);
+	document.getElementById('item').value = '';
+	//Adding to object
+	data.todo.push(value);
 
-    dataObjectUpdated();
+	dataObjectUpdated();
 }
 
 function renderTodoList() {
-    if (!data.todo.length && !data.completed.length) return;
+	if (!data.todo.length && !data.completed.length) return;
 
-    for (var i = 0; i < data.todo.length; i++) {
-        var value = data.todo[i];
-        addItemToDOM(value);
-    }
+	for (var i = 0; i < data.todo.length; i++) {
+		var value = data.todo[i];
+		addItemToDOM(value);
+	}
 
-    for (var j = 0; j < data.completed.length; j++) {
-        var value = data.completed[j];
-        addItemToDOM(value, true);
-    }
+	for (var j = 0; j < data.completed.length; j++) {
+		var value = data.completed[j];
+		addItemToDOM(value, true);
+	}
 }
 
 function dataObjectUpdated() {
-    localStorage.setItem('todoList', JSON.stringify(data));
+	localStorage.setItem('todoList', JSON.stringify(data));
 }
 
 function removeItem() {
-    var item = this.parentNode.parentNode; // <li></li>
-    var parent = item.parentNode; //<ul class="todo"
-    var id = parent.id;
-    var value = item.innerText;
+	var item = this.parentNode.parentNode; // <li></li>
+	var parent = item.parentNode; //<ul class="todo"
+	var id = parent.id;
+	var value = item.innerText;
 
-    //removing from object
-    if (id === 'todo') {
-        data.todo.splice(data.todo.indexOf(value), 1);
-    } else {
-        data.completed.splice(data.completed.indexOf(value), 1);
-    }
+	//removing from object
+	if (id === 'todo') {
+		data.todo.splice(data.todo.indexOf(value), 1);
+	} else {
+		data.completed.splice(data.completed.indexOf(value), 1);
+	}
 
-    dataObjectUpdated();
+	dataObjectUpdated();
 
-    //Removing from display ie HTML
-    parent.removeChild(item);
+	//Removing from display ie HTML
+	parent.removeChild(item);
 }
 
 function completeItem() {
-    var item = this.parentNode.parentNode;
-    var parent = item.parentNode;
-    var id = parent.id;
-    var value = item.innerText;
+	var item = this.parentNode.parentNode;
+	var parent = item.parentNode;
+	var id = parent.id;
+	var value = item.innerText;
 
-    // Swapping within object
-    if (id === 'todo') {
-        data.todo.splice(data.todo.indexOf(value), 1);
-        data.completed.push(value);
-    } else {
-        data.completed.splice(data.completed.indexOf(value), 1);
-        data.todo.push(value);
-    }
+	// Swapping within object
+	if (id === 'todo') {
+		data.todo.splice(data.todo.indexOf(value), 1);
+		data.completed.push(value);
+	} else {
+		data.completed.splice(data.completed.indexOf(value), 1);
+		data.todo.push(value);
+	}
 
-    dataObjectUpdated();
+	dataObjectUpdated();
 
-    // swapping within html 
-    var target = (id === 'todo') ? document.getElementById('completed') : document.getElementById('todo');
+	// swapping within html
+	var target = (id === 'todo') ? document.getElementById('completed') : document.getElementById('todo');
 
-    parent.removeChild(item);
-    target.insertBefore(item, target.childNodes[0]);
+	parent.removeChild(item);
+	target.insertBefore(item, target.childNodes[0]);
 
 }
+
 // Adds a new item to todo list
 function addItemToDOM(text, completed) {
 
-    var list = (completed) ? document.getElementById('completed') : document.getElementById('todo');
+	var list = (completed) ? document.getElementById('completed') : document.getElementById('todo');
 
-    var item = document.createElement('li');
-    item.innerText = text;
+	var item = document.createElement('li');
+	item.innerText = text;
 
-    var buttons = document.createElement('div');
-    buttons.classList.add('buttons');
+	var buttons = document.createElement('div');
+	buttons.classList.add('buttons');
 
-    var remove = document.createElement('button');
-    remove.classList.add('remove');
-    remove.innerHTML = removeSVG;
+	var remove = document.createElement('button');
+	remove.classList.add('remove');
+	remove.innerHTML = removeSVG;
 
-    //Add click event for removing the item
-    remove.addEventListener('click', removeItem);
+	//Add click event for removing the item
+	remove.addEventListener('click', removeItem);
 
-    var complete = document.createElement('button');
-    complete.classList.add('complete');
-    complete.innerHTML = completeSVG;
+	var complete = document.createElement('button');
+	complete.classList.add('complete');
+	complete.innerHTML = completeSVG;
 
-    //Add click event for completing the item
-    complete.addEventListener('click', completeItem);
+	//Add click event for completing the item
+	complete.addEventListener('click', completeItem);
 
-    buttons.appendChild(remove);
-    buttons.appendChild(complete);
-    item.appendChild(buttons);
+	buttons.appendChild(remove);
+	buttons.appendChild(complete);
+	item.appendChild(buttons);
 
-    list.insertBefore(item, list.childNodes[0]);
+	list.insertBefore(item, list.childNodes[0]);
 }
